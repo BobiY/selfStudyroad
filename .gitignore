@@ -6,4 +6,4 @@ node_modules
 * - 副本.*
 package-lock.json
 /tmp
-
+.awcache
