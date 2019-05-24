@@ -13,5 +13,7 @@ class App extends React.Component<any, any> {
         );
     }
 }
+const a = [1,2,3].map( item => item );
+console.log(a);
 
 ReactDOM.render(<App />, document.getElementById("app"));
