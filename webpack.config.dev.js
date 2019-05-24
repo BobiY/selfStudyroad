@@ -7,7 +7,7 @@ const devServer = require("webpack-dev-server");
 
 module.exports = {
     mode: "development",
-    entry: "./src/index.ts",
+    entry: "./src/index.tsx",
     output: {
         filename: "[name].js",
         path: path.resolve(__dirname, "dist")
@@ -34,6 +34,10 @@ module.exports = {
                   },
                   {
                     loader: 'less-loader',
+                    options: {
+                        modifyVars: { }, // 配置 antd 的主题样式
+                        javascriptEnabled: true,
+                    },
                   },
                 ],
               },
@@ -46,7 +50,9 @@ module.exports = {
         new CheckerPlugin(),
         new HtmlWebpackPlugin({
             title: "all road",  // 页面title
-            hash: true // 给每个文件添加 hsah 值，防止缓存
+            hash: true, // 给每个文件添加 hsah 值，防止缓存
+            filename: "./index.html",
+            template: "./assert/index.html"
         }),
         new webpack.HotModuleReplacementPlugin(), // 启用模块的热更新
         new MiniCssExtractPlugin({
