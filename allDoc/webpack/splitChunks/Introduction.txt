@@ -1,0 +1,3 @@
+optimization.splitChunks 是 webpack 为 SplitChunksPlugin 插件提供的自定义配置项。
+
+webpack 会提供一些默认的设置，这时只会影响按需加载的模块，因为修改项目代码。

@@ -4,16 +4,24 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
-    mode: "development",
+    mode: "production",
     entry: "./src/index.tsx",
     output: {
         filename: "[name].js",
-        path: path.resolve(__dirname, "dist")
+        path: path.resolve(__dirname, "../","dist"),
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".json"]
     },
-
+    optimization: {
+        splitChunks: {
+          chunks: 'all',
+        }
+    },
+    externals: {
+        react: "React",
+        "react-dom": "ReactDOM"
+    },
     module: {
         rules: [
             { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
@@ -37,18 +45,19 @@ module.exports = {
               },
         ]
     },
-    devServer: {
-        contentBase: path.join(__dirname, "dist"),
-        port: 8000
-    },
     plugins:[
         new CheckerPlugin(),
         new HtmlWebpackPlugin({
-            title: "all road",  // 页面title
-            hash: true // 给每个文件添加 hsah 值，防止缓存
+            // title: "all road",  // 页面title
+            hash: true, // 给每个文件添加 hsah 值，防止缓存
+            templateParameters: {
+                js: [ "assets/react.js", "assets/react-dom.js"],
+                title: "all road"
+            },
+            template: "./assert/index.html"
         }),
         new MiniCssExtractPlugin({
-            filename: '[name].css',
+            filename: 'index.css',
             chunkFilename: '[id].css',
         }),
     ]
