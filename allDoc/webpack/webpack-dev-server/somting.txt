@@ -1,0 +1,133 @@
+以下的 webpack-dev-server 的各个选项配合均来自 webpack 官网
+1.  使用
+
+    webpack-dev-server 通常会直接配置在 webpack 配置项下的 devServer 选项下，如果想通过 node js 启动，还可以进行以下配置
+
+    const Webpack = require('webpack');
+    const WebpackDevServer = require('../../../lib/Server');
+    const webpackConfig = require('./webpack.config');
+
+    const compiler = Webpack(webpackConfig);
+    const devServerOptions = Object.assign({}, webpackConfig.devServer, {
+        open: true,
+        stats: {
+            colors: true,
+        },
+    });
+    const server = new WebpackDevServer(compiler, devServerOptions);
+
+    server.listen(8080, '127.0.0.1', () => {
+        console.log('Starting server on http://localhost:8080');
+    });
+
+    然后直接 node server.js 进行启动
+
+（下列配置是常用配置项，更高级的使用请参照官网）
+
+2. allowedHosts: string[]
+
+    通过此选项可以设置一些开发服务器能访问的服务器的白名单。
+    
+    devServer:{
+        allowedHosts: [
+            "baidu.com",
+            "some host..."
+        ]
+    }
+
+    如果设置的 host 是以 . 开头，.host.com 将匹配任何子域为 host.com 的域名
+
+3. color: boolean
+
+    启用 cli 编译时是否有颜色。 也可以使用 webpack-dev-server --color 启用
+
+4. compress: boolean
+
+    为本地服务器提供 gaip 压缩（服务器在发送文件之前会将文件压缩以减小文件体积，减少网络传输时间。这在本地开发时用处不大。）
+
+    可以使用 webpack-dev-server -- compress 开启此选项
+
+5. contentBase（boolean:false srting [string] number）
+
+    告诉服务器从哪里获取静态资源（建议使用绝对路径）默认情况下将会把项目的跟目录作为 contentBase, 可以设置为 false 禁用
+
+    devServer: {
+        contentBase: path.join(__dirname, "assert"),
+    }
+
+    也可以指定多个
+
+    devServer: {
+        contentBase: [path.join(__dirname, "assert"), path.join(__dirname, "public")],
+    }
+
+    还可以
+
+    webpack-dev-server --content-base [文件路径]
+
+6. index: string
+
+    指定服务打开时的 html 文件名
+
+7. open: boolean or string(具体的浏览器名字)
+
+    启动好服务器后，打开默认或者指定的浏览器（使用 open-browser-webpack-plugin 代替，真没看出来这个玩意有什么用）
+
+8. port: number 
+
+    指定服务的端口号
+
+9. proxy: object [object, function]
+
+    提供代理服务
+
+    devServer:{
+        proxy: {
+            "app": "http://localhost:3000" (http:// 前缀是必须的)
+        }
+    }
+
+    现在 app/use ====> http://localhost:3000/app/use
+
+    如果不想传递 app，也可以进行重写
+    devServer:{
+        proxy: {
+            "app": {
+                    target: 'http://localhost:3000',
+                    pathRewrite: {'^/api' : ''}
+            }
+        }
+    }
+
+    默认情况下，将不接受在HTTPS上运行且具有无效证书的后端服务器，如果你想允许运行，可以进行以下配置：
+    devServer:{
+        proxy: {
+            "app": {
+                    target: 'https://other-server.example.com',
+                    secure: false
+            }
+        }
+    }
+
+    在某些情况下，你可能不想让所有的请求都进行代理，此时你可以对代理进行判断绕过：
+    devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        bypass: function(req, res, proxyOptions) {
+          if (req.headers.accept.indexOf('html') !== -1) {
+            console.log('Skipping proxy for browser request.');
+            return '/index.html';
+          }
+        }
+      }
+    }
+  }
+
+  如果要将多个特定路径代理到同一目标，则可以使用具有context属性的一个或多个对象的数组：
+  devServer: {
+    proxy: [{
+      context: ['/auth', '/api'],
+      target: 'http://localhost:3000',
+    }]
+  }
