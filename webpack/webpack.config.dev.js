@@ -56,10 +56,13 @@ module.exports = {
     plugins:[
         new CheckerPlugin(),
         new HtmlWebpackPlugin({
-            title: "all road",  // 页面title
             hash: true, // 给每个文件添加 hsah 值，防止缓存
             filename: "./index.html",
-            template: "./assert/index.html"
+            template: "./assert/index.html",
+            templateParameters: {
+                js: [ "assets/react.js", "assets/react-dom.js"],
+                title: "all road",
+            },
         }),
         // new webpack.HotModuleReplacementPlugin(), // 启用模块的热更新 devServer 默认会开启 hot，即使不指定改插件，也会自动添加
         // new MiniCssExtractPlugin({

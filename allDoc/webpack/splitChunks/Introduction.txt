@@ -1,3 +1,100 @@
 optimization.splitChunks 是 webpack 为 SplitChunksPlugin 插件提供的自定义配置项。
 
-webpack 会提供一些默认的设置，这时只会影响按需加载的模块，因为修改项目代码。
+webpack 会提供一些默认的设置，这时只会影响按需加载的模块。
+
+在 webpack 中，按需加载可以通一下方式实现。
+
+注意，即使在不使用 babel 的情况下，只要是通过 webpack 编译的代码，在 webpack2 + 版本，都可以使用熟悉的模块导出语法。
+
+    1. import React form "react";  export const aa = 1;
+
+webpack2 + 版本还支持模块的动态导入语法：
+
+    2. import() ===> import("path/module") -> promise(在使用各个框架的 router 时，可以直接使用这种语法导入各个路由视图)
+
+        如果你使用了这种语法，webpack 会将导入的模块单独拆分，也就是代码拆分。只有在用到时才会进行引入。
+
+        要使用这种语法，务必要保证对应的浏览器是支持 promise 的。不然会造成错误。
+    
+    3. webpack2 + 版本以后提倡使用 import() 语法进行按需加载和代码分割。
+
+    4. 文件是否单独打包的依据
+
+        新代码块可以被共享引用，或这些模块都是来自node_modules
+
+        新产出的vendor-chunk大于30kb
+
+        按需加载的代码块（vendor-chunk）并行请求的数量小于或等于5个
+
+        初始加载的代码块，并行请求的数量小于或者等于3个
+
+下面是代码分割的相关配置：
+
+    1. 此功能是 webpack 通过 SplitChunksPlugin 插件实现，默认情况下会有以下配置
+
+    optimization: {
+        splitChunks: {
+            chunks: 'async',
+            minSize: 30000,
+            maxSize: 0,
+            minChunks: 1,
+            maxAsyncRequests: 5,
+            maxInitialRequests: 3,
+            automaticNameDelimiter: '~',
+            name: true,
+            cacheGroups: {
+                vendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: -10
+                },
+                default: {
+                    minChunks: 2,
+                    priority: -20,
+                    reuseExistingChunk: true
+                }
+            }
+        }
+    }
+
+    2. 以下是每个配置项的简单解释
+
+        1. automaticNameDelimiter: string
+
+            此选项主要用于打包公用文件时，vendors 和文件名之间的分隔符（eg： vender~main.js），可以自定义配置。
+
+        2. chunks: function(chunk) | string
+
+            此选项只要是标志需要对哪些模块进行拆分处理
+
+            a. 作为 string 来说，有一下三种配置：
+
+                "all": 将对有公用使用的模块进行拆分处理。
+                "async": 只会对异步模块间的公共模块进行拆分处理。（默认值）
+                "initial": 只会处理入口文件里的按需加载的模块。
+            
+            b. 作为 string 来说：
+
+                optimization: {
+                    splitChunks: {
+                        chunks (chunk) {
+                            // exclude `my-excluded-chunk`
+                            return chunk.name !== 'my-excluded-chunk';
+                        }
+                    }
+                }
+            可以控制输出哪些公用的快。
+
+            extra 这里如果指定的是函数，则可以与 HtmlWebpackPlugin 配合将打包出的公用模块直接导入生成的 html 文件中。
+
+            1. const chunks = [];
+            2. chunks (chunk) {
+                    chunks.push(chunk.name)
+                    return true;
+                }
+            3. 这时抽离的公共模块就会打包进 生成的 html 中
+        
+        3. maxInitialRequests: number  
+            
+            指的是在 html 中 js 标签（除了index.js之外）应该引用的 js 文件的数量，默认为 3
+
+

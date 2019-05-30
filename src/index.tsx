@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import "./index.less";
-
+// const OtherComponent = React.lazy(() => import("./js/index"));
 class App extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
@@ -15,5 +15,4 @@ class App extends React.Component<any, any> {
 }
 const a = [1,2,3].map( item => item );
 console.log(a);
-
 ReactDOM.render(<App />, document.getElementById("app"));
