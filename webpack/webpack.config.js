@@ -5,13 +5,11 @@ const webpack = require("webpack");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const cleanPlugin = require("clean-webpack-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CopyPlugin = require('copy-webpack-plugin');
 const chunks = [];
 module.exports = {
     mode: "production",
-    entry: {
-        main:"./src/index.tsx",
-        index:"./src/js/index.tsx"
-    },
+    entry: "./src/index.tsx",
     output: {
         filename: "[name].js",
         path: path.resolve(__dirname, "../","dist"),
@@ -22,18 +20,19 @@ module.exports = {
     optimization: {
         splitChunks: {
            chunks: "all",
-           maxAsyncRequests: 4, // 异步加载的最大请求数，适用于按需加载
-           maxInitialRequests: 2  // 指的是在 html 中 js（除了index.js） 之外应该引用的 js数量，默认为 3
+           maxAsyncRequests: 2, // 异步加载的最大请求数，适用于按需加载
+           maxInitialRequests: 3  // 指的是在 html 中 js（除了index.js） 之外应该引用的 js数量，默认为 3
         },
-        runtimeChunk: { // 这时在 dev 环境下的？？？？ 有利于文件缓存
-            name: entrypoint => `runtime~${entrypoint.name}`
-        }
+        // runtimeChunk: { // 这时在 dev 环境下的？？？？ 有利于文件缓存
+        //     name: entrypoint => `runtime~${entrypoint.name}`
+        // }
+        runtimeChunk: "single"
     },
-    // externals: {
-    //     react: "React",
-    //     "react-dom": "ReactDOM",
-    //     "antd": "antd"
-    // },
+    externals: {
+        react: "React",
+        "react-dom": "ReactDOM",
+        "antd": "antd"
+    },
     module: {
         rules: [
             { 
@@ -75,14 +74,18 @@ module.exports = {
             templateParameters: {
                 js: [ "assets/react.js", "assets/react-dom.js", "assets/moment.min.js", "assets/antd.min.js"],
                 title: "all road",
+                css: ["asset/antd.css"]
             },
-            template: "./assert/index.html",
+            template: "./asset/index.html",
             // chunks: chunks
         }),
         new MiniCssExtractPlugin({
             filename: 'index.css',
             chunkFilename: '[id].css',
         }),
+        new CopyPlugin([
+            { from: path.resolve(__dirname, "../", 'asset/**'), to:  path.resolve(__dirname, "../", 'dist/') },
+        ]),
         // new BundleAnalyzerPlugin(),
         new cleanPlugin() // 在每次构建之前，将会清理 output path 里面的内容
     ]

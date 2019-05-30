@@ -4,20 +4,22 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
     mode: "development",
     entry: "./src/index.tsx",
     output: {
         filename: "bundle.js",
         path: path.resolve(__dirname, "dist"),
-        publicPath: "/assert/"
+        // publicPath: "/assert/"
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".json"]
     },
     externals: {
         react: "React",
-        "react-dom": "ReactDOM"
+        "react-dom": "ReactDOM",
+        "antd": "antd"
     },
     module: {
         rules: [
@@ -58,12 +60,16 @@ module.exports = {
         new HtmlWebpackPlugin({
             hash: true, // 给每个文件添加 hsah 值，防止缓存
             filename: "./index.html",
-            template: "./assert/index.html",
+            template: "./asset/index.html",
             templateParameters: {
-                js: [ "assets/react.js", "assets/react-dom.js"],
+                js: [ "/asset/react.js", "/asset/react-dom.js", "/asset/moment.min.js", "/asset/antd.min.js"],
                 title: "all road",
+                css: ["asset/antd.css"]
             },
         }),
+        new CopyPlugin([
+            { from: path.resolve(__dirname, "../", 'asset/**'), to:  path.resolve(__dirname, "../", 'dist/') },
+        ]),
         // new webpack.HotModuleReplacementPlugin(), // 启用模块的热更新 devServer 默认会开启 hot，即使不指定改插件，也会自动添加
         // new MiniCssExtractPlugin({
         //     filename: '[name].css',
