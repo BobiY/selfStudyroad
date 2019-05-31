@@ -3,8 +3,10 @@ import * as ReactDOM from "react-dom";
 import { Button } from "antd";
 import Loading from "./css/Loading/Loading";
 import "./index.less";
-// const OtherComponent = React.lazy(() => import("./js/index"));
-class App extends React.Component<any, any> {
+import { createRouter, aa, createRouters  } from "./utils/createRouter";
+
+
+export default class App extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {

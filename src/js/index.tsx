@@ -9,7 +9,6 @@ export default class Index extends React.Component<any, any> {
     render() {
         return (
             <div><Button>点我吧</Button><IReact /></div>
-            // <div>sssss</div>
         )
     }
 }

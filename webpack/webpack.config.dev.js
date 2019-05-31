@@ -7,7 +7,7 @@ const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
     mode: "development",
-    entry: "./src/index.tsx",
+    entry: "./src/main.tsx",
     output: {
         filename: "bundle.js",
         path: path.resolve(__dirname, "dist"),
