@@ -3,8 +3,6 @@ import * as ReactDOM from "react-dom";
 import { Button } from "antd";
 import Loading from "./css/Loading/Loading";
 import "./index.less";
-import { createRouter, aa, createRouters  } from "./utils/createRouter";
-
 
 export default class App extends React.Component<any, any> {
     constructor(props: any) {
@@ -17,6 +15,10 @@ export default class App extends React.Component<any, any> {
         setTimeout( () => {
             this.setState({loading: false})
         },2500 );
+    }
+    componentWillUnmount() { // 跳转到其他路由后更改 页面背景色
+        const $bodyEle = document.getElementsByTagName("body")[0];
+        $bodyEle.style.background = "#e8e8e8";
     }
     render() {
         const { loading } = this.state;
@@ -39,5 +41,3 @@ export default class App extends React.Component<any, any> {
         );
     }
 }
-
-ReactDOM.render(<App />, document.getElementById("app"));

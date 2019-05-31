@@ -1,37 +1,18 @@
 import { renderRoutes  } from "react-router-config";
 import * as React from 'react';
 import { IRouter } from "../interface/routerInterface";
-export const aa = [
-    {
-        component: props => <div>1111{props.children}</div>,
-        routes: [
-            {
-                component: props => <div>22222{props.children}</div>,
-                path: "/222",
-                routes: [
-                    {
-                        component: () => <div>3333</div>
-                    }
-                ],
-            },
-            {
-                component: () =><div>22222111111</div>,
-                path: "/222111",
-                routes: [
-                    {
-                        component: () => <div>333333311111111</div>
-                    }
-                ],
-            }
-        ]
-    }
-];
 
+/**
+ *  此次使用了 React 新增的 React.lazy 和 React.Suspense；
+ *  React.lazy 用于分割各个路由页面
+ *  React.Suspense 用于在渲染出错时提供一个 UI 回退方案
+ * import("./xxx") 不能直接使用，应该 配合 React.lazy
+ */
 
 const getComponent = WapperComponent => ({ route }): JSX.Element => {
     return <WapperComponent>{renderRoutes(route.routes)}</WapperComponent>
 };
-export const createRouter = (routes: any[]) => { 
+const createRouter = (routes: any[]) => { 
     routes.forEach( item => {
         if ( item.routes ) {
             if ( !item.render ) { // 如果用户传递了 render ，说明想自己去定义生成
