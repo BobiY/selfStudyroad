@@ -1,0 +1,14 @@
+{
+  "name": "nodekoaserver",
+  "version": "1.0.0",
+  "description": "koa test server",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "yscc",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^2.7.0"
+  }
+}

@@ -1,0 +1,9 @@
+node_modules
+/dist
+/.idea/*.xml
+/.idea/webServers.xml
+
+* - 副本.*
+package-lock.json
+/tmp
+.awcache
