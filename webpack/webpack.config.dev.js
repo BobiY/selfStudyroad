@@ -31,9 +31,6 @@ module.exports = {
                   {
                     loader: 'style-loader',
                   },
-                //   {
-                //     loader: MiniCssExtractPlugin.loader,
-                //   },
                   {
                     loader: 'css-loader',
                   },
@@ -45,7 +42,15 @@ module.exports = {
                     },
                   },
                 ],
-              },
+            },
+            {
+                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                loader: 'url-loader',
+                options: {
+                    limit: 100000,
+                    name: 'images/[name].[hash:7].[ext]'
+                }
+            }
         ]
     },
     devServer: {
