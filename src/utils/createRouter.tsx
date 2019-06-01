@@ -20,7 +20,9 @@ const createRouter = (routes: any[]) => {
             }
             createRouter(item.routes)
         } else {
-            item.component = React.lazy(item.component);
+            if(item.component) {
+                item.component = React.lazy(item.component);
+            }
         }
     } )
     return routes;
@@ -28,5 +30,10 @@ const createRouter = (routes: any[]) => {
 
 export const createRouters = (routes: any) => {
     const result = createRouter(routes);
-    return <React.Suspense fallback={() => {console.log("error is start.....")}}>{renderRoutes(result)}</React.Suspense>
-}
+    return (
+        <React.Suspense fallback={() => {console.log("error is start.....")}}>
+                {renderRoutes(result)}
+        </React.Suspense>
+    );
+};
+

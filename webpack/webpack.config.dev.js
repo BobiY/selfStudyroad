@@ -54,6 +54,7 @@ module.exports = {
         open: true,  // 启动服务后，打开默认浏览器 目前测试并没什么用
         filename:"bundle.js",
         lazy: true,
+        openPage: '/app'
     },
     plugins:[
         new CheckerPlugin(),
