@@ -9,5 +9,15 @@ export const routes = [
         path: "/javascript",
         component: () => import("../js/index")
     },
-
+    {
+        path: "/react",
+        component: () => import("../js/react/index")
+    },
+    {
+        path: "/rxjs",
+        component: () => import("../js/rxjs/index")
+    },
+    {
+        component: () => import("./404page/404")
+    },
 ];

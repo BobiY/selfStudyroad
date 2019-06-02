@@ -2,27 +2,19 @@ import * as React from "react";
 import { Button, List, Avatar, Card } from "antd";
 import IReact from "./react/index";
 import { list } from "../config/jsConfig/listConfig";
+import { urlRouter } from "../config/jsConfig/jsRouter";
+import { withRouter } from "react-router";
 import "./index.less";
 
-const data = [
-    {
-        title: 'Ant Design Title 1',
-    },
-    {
-        title: 'Ant Design Title 2',
-    },
-    {
-        title: 'Ant Design Title 3',
-    },
-    {
-        title: 'Ant Design Title 4',
-    },
-];
-export default class Index extends React.Component<any, any> {
+class Index extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
     }
-
+    handleClick(aimType) {
+        const { history: {push} } = this.props;
+        const aimUrl = urlRouter[aimType];
+        push(aimUrl);
+    }
     render() {
         return (
             <div className="javascript-style">
@@ -31,7 +23,7 @@ export default class Index extends React.Component<any, any> {
                         itemLayout="horizontal"
                         dataSource={list}
                         renderItem={item => (
-                            <List.Item actions={[<a>继续学习</a>]}>
+                            <List.Item actions={[<a onClick={ this.handleClick.bind(this, item.type) }>继续学习</a>]}>
                                 <List.Item.Meta
                                     avatar={<Avatar src={item.avatar} />}
                                     title={item.title}
@@ -45,3 +37,5 @@ export default class Index extends React.Component<any, any> {
         )
     }
 }
+
+export default withRouter(Index);

@@ -32,7 +32,7 @@ export const createRouters = (routes: any) => {
     const result = createRouter(routes);
     return (
         <React.Suspense fallback={() => {console.log("error is start.....")}}>
-                {renderRoutes(result)}
+            {renderRoutes(result)}
         </React.Suspense>
     );
 };

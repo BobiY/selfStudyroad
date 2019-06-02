@@ -6,7 +6,10 @@ export default class IReact extends React.Component<any, any> {
     }
     render() {
         return (
-            <div>IReact</div>
+            <div>
+                IReact
+                {this.props.children || null}
+            </div>
         )
     }
 }
