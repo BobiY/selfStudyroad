@@ -8,7 +8,7 @@ export default class IReact extends React.Component<any, any> {
     render() {
         return (
             <div>
-                <Layout menuConfig={routes}>
+                <Layout menuConfig={routes} title={"React"}>
                     {this.props.children || null}
                 </Layout>
             </div>

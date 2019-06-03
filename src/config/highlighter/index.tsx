@@ -1,6 +1,6 @@
 import * as React from "react";
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { paraisoDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { paraisoDark, atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 export default class Highlighter extends React.Component<any, any> { // 用于生成高亮代码块
     constructor(props) {
@@ -8,9 +8,9 @@ export default class Highlighter extends React.Component<any, any> { // 用于�
     }
 
     render() {
-        const { codeString } = this.props;
+        const { codeString, lan } = this.props;
         return (
-            <SyntaxHighlighter language = {"javascript"} style = { paraisoDark } >
+            <SyntaxHighlighter language = {lan || "javascript"} style = { atomOneLight } >
                 { codeString }
             </SyntaxHighlighter>
        );

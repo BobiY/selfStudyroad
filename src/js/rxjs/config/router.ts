@@ -1,6 +1,6 @@
 export const routes = [
     {
-        path: "/aa",
+        path: "/",
         component: "////",
         name: "aa",
         routes: [

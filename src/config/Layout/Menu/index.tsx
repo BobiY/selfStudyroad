@@ -25,8 +25,11 @@ class ConmmonMenu extends React.Component<any, any>{
     renderMenu() {
         const { menuConfig } = this.props;
         return menuConfig.map( item => {
-            this.rootSubmenuKeys.push(item.path);
-            this.calSelectKey[item.path] = [];
+            const tmp = this.rootSubmenuKeys.filter( path => path === item.path );
+            if ( tmp.length === 0 ) {
+                this.rootSubmenuKeys.push(item.path);
+                this.calSelectKey[item.path] = [];
+            }
             if ( item.routes ) {
                 return <SubMenu
                     key={item.path}
@@ -37,7 +40,10 @@ class ConmmonMenu extends React.Component<any, any>{
                     }
                 >
                     {item.routes.map( sub => {
-                        this.calSelectKey[item.path].push(sub.path);
+                        const tmps = this.calSelectKey[item.path].filter( path => path === sub.path );
+                        if ( tmps.length === 0 ) {
+                            this.calSelectKey[item.path].push(sub.path);
+                        } 
                         return <Menu.Item key={sub.path}>
                                     <Link to={sub.path}>
                                         {sub.name}
@@ -53,6 +59,9 @@ class ConmmonMenu extends React.Component<any, any>{
     onOpenChange = openKeys => {
         const { history: {push} } = this.props;
         const latestOpenKey = openKeys.find(key => this.state.openKeys.indexOf(key) === -1);
+        if ( !latestOpenKey ) {
+            return false;
+        }
         if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
             const [ subFirstKey ] = this.calSelectKey[latestOpenKey];
             this.setState({ openKeys, selectedKeys: [subFirstKey] });
@@ -69,7 +78,7 @@ class ConmmonMenu extends React.Component<any, any>{
     handleClick(item) {
         const { key } = item;
         const { history: {push} } = this.props;
-        this.setState({ selectedKeys: key });
+        this.setState({ selectedKeys: [key] });
         push(key);
     }
     render() {
