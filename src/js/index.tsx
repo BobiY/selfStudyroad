@@ -13,6 +13,7 @@ class Index extends React.Component<any, any> {
     handleClick(aimType) {
         const { history: {push} } = this.props;
         const aimUrl = urlRouter[aimType];
+        console.log(aimUrl, aimType, urlRouter)
         push(aimUrl);
     }
     render() {

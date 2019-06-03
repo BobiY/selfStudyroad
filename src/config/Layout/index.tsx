@@ -40,7 +40,7 @@ export default class LayoutPage extends React.Component<any, any> {
                     minHeight: 280,
                     }}
                 >
-                    Content
+                    {this.props.children || null}
                 </Content>
                 </Layout>
             </Layout>

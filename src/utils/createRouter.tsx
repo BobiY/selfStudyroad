@@ -37,3 +37,13 @@ export const createRouters = (routes: any) => {
     );
 };
 
+export const getRoutes = ( routes: any[] ) => {
+    const result = [];
+    const tmp = routes.map( item => {
+        return item.routes;
+    } )
+    tmp.forEach( item => {
+        result.push( ...item );
+    } );
+    return result;
+}

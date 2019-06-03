@@ -1,5 +1,6 @@
 import * as React from "react";
-
+import Layout from "../../config/Layout/index";
+import { routes } from "./config/router";
 export default class IReact extends React.Component<any, any> {
     constructor(props: any){
         super(props);
@@ -7,8 +8,9 @@ export default class IReact extends React.Component<any, any> {
     render() {
         return (
             <div>
-                IReact
-                {this.props.children || null}
+                <Layout menuConfig={routes}>
+                    {this.props.children || null}
+                </Layout>
             </div>
         )
     }
